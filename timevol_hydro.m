@@ -81,7 +81,6 @@ legendInfo6 = [     {'[10,2,1] R_e=1'}...
                     {'[100,2,1] R_e=3'}];                   
 sizearray=[size(files1,2) size(files2,2) size(files3,2) size(files4,2) size(files5,2)];    
 maxsize=max(sizearray);
- if (1==2)               
 for co1=1:maxsize
     color{co1}=rand(1,3); 
 end
@@ -262,7 +261,7 @@ for j=1:size(files4,2)
             
     end
 end 
- end
+ 
 for j=1:size(files5,2)
     B_flag = 0;
     u_flag = 1;
@@ -330,7 +329,7 @@ for j=1:size(files5,2)
                     'MarkerFaceColor',color{j},...
                     'MarkerSize',5);
         hold on;
-        title('$\textit{Kinetic Energy Spectrum in a box } [10,2,1]$', 'Interpreter', 'latex','fontsize',20, [0 0 10 10]);
+        %title('$\textit{Kinetic Energy Spectrum in a box } [10,2,1]$', 'Interpreter', 'latex','fontsize',20, [0 0 10 10]);
         xlabel('$k \textit{ } [2\pi L^{-1}]$', 'Interpreter', 'latex','fontsize',20);
         ylabel('$E_K \textit{ } [L^2T^{-2}_{turnover}]$', 'Interpreter', 'latex','fontsize',20);
         legend(legendInfo5,'Location','northeast')
