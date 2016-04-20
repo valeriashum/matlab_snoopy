@@ -18,16 +18,17 @@
 
 % Get the data
 % @i is only used for outputting to the table
-
-for folder = 1:6
- for constt = 1:3  % file number
+% save this file in KinematicOutput/graphics
+rep='/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/snoopy1/kinematicOutput';
+rep1='/media/vs391/TOSHIBAHARD/WORK/u_abc/box_10_kinematicOutput_5/';
+ for constt = 2  % file number
     for const = 0:7    %  number of cores
         fprintf('Begin: rates%d/rates_r0%d\n', constt, const);
-         clearvars -except const constt folder
+         clearvars -except const constt folder rep rep1
          box_ar = 10;
-         filename_out = ['/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/kinematicOutput_box_' num2str(box_ar) '_' num2str(folder) '/rates' num2str(constt) '/modes_r0' num2str(const) '.txt'];
-         filename_in  = ['/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/kinematicOutput_box_' num2str(box_ar) '_' num2str(folder) '/rates' num2str(constt) '/rates_r0' num2str(const) '.txt'];
-         filename_rm  = ['/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/kinematicOutput_box_' num2str(box_ar) '_' num2str(folder) '/timevar' num2str(constt) '.dat'];
+         filename_out = [rep1, '/rates' num2str(constt) '/modes_r0' num2str(const) '.txt'];
+         filename_in  = [rep1, '/rates' num2str(constt) '/rates_r0' num2str(const) '.txt'];
+         filename_rm  = [rep1, '/timevar' num2str(constt) '.dat'];
 
         try
             % get the magnetic Reynolds number for the sim
@@ -456,4 +457,3 @@ for folder = 1:6
     
     end
  end
-end

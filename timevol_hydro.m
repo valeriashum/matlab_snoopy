@@ -96,38 +96,39 @@ for j=1:size(files1,2)
     end
     figure(1)
     if exist('t')&&exist('ev')
-        subplot(3,2,1:2)
+        %subplot(3,2,1:2)
+        set(gca, 'FontSize', 12)
             plot(t,ev,'color',color{j},'LineWidth',1.5);
             hold on;
-            title('$\textit{Hydrodynamics of the ABC flow at } R_e=12$','fontsize',16, 'Interpreter', 'latex');
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            ylabel('$E_K$','fontsize',16, 'Interpreter', 'latex');
-            legend(legendInfo1,'Location','east')
-        subplot(3,2,3:4)
-            plot(t,ev-mean(ev),'color',color{j},'LineWidth',1.5);
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            ylabel('$E_K - \bar{E}_K$','fontsize',16, 'Interpreter', 'latex'  );
+            title('Hydrodynamics of the ABC flow at $R_e=12$','fontsize',16, 'Interpreter', 'latex');
+            xlabel('$T [T_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
+            ylabel('$E_K [L^2T^{-1}_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
+            legend(legendInfo1,'Location','eastoutside')
+%         subplot(3,2,3:4)
+%             plot(t,ev-mean(ev),'color',color{j},'LineWidth',1.5);
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             ylabel('$E_K - \bar{E}_K$','fontsize',16, 'Interpreter', 'latex'  );
             
     end
 
    
-    if exist('t')&&exist('hv')
-        subplot(3,2,5)
-            plot(t,hv,'color',color{j},'LineWidth',1.5);
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            title('$\textit{Helicity } \langle \vec{u}\cdot \vec{\omega} \rangle$','fontsize',16, 'Interpreter', 'latex');
-    end
-
-    if exist('t')&&exist('w2')
-        subplot(3,2,6)
-            plot(t,w2,'color',color{j},'LineWidth',1.5); 
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            title('$\textit{Vorticity } \int |\vec{\omega}|^2 dV$','fontsize',16, 'Interpreter', 'latex');
-            
-    end
+%     if exist('t')&&exist('hv')
+%         subplot(3,2,5)
+%             plot(t,hv,'color',color{j},'LineWidth',1.5);
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             title('$\textit{Helicity } \langle \vec{u}\cdot \vec{\omega} \rangle$','fontsize',16, 'Interpreter', 'latex');
+%     end
+% 
+%     if exist('t')&&exist('w2')
+%         subplot(3,2,6)
+%             plot(t,w2,'color',color{j},'LineWidth',1.5); 
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             title('$\textit{Vorticity } \int |\vec{\omega}|^2 dV$','fontsize',16, 'Interpreter', 'latex');
+%             
+%     end
 end 
 for j=1:size(files2,2)
     full_file=importdata(files2{1,j});
@@ -140,39 +141,40 @@ for j=1:size(files2,2)
     end
     figure(2)
     if exist('t')&&exist('ev')
-        subplot(3,2,1:2)
+       % subplot(3,2,1:2)
+            set(gca, 'FontSize', 12)
             plot(t,ev,'color',color{j},'LineWidth',1.5);
             hold on;
-            title('$\textit{Hydrodynamics of the ABC flow in a box } [10,2,1]$','fontsize',16, 'Interpreter', 'latex');
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            ylabel('$E_K$','fontsize',16, 'Interpreter', 'latex');
-            legend(legendInfo2,'Location','northeast')
-        subplot(3,2,3:4)
-            plot(t,ev-mean(ev),'color',color{j},'LineWidth',1.5);
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            ylabel('$E_K - \bar{E}_K$','fontsize',16, 'Interpreter', 'latex'  );
+            title('Hydrodynamics of the ABC flow in a box $[10,2,1]$','fontsize',16, 'Interpreter', 'latex');
+            xlabel('$T [T_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
+            ylabel('$E_K [L^2T^{-1}_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
+            legend(legendInfo2,'Location','eastoutside')
+%         subplot(3,2,3:4)
+%             plot(t,ev-mean(ev),'color',color{j},'LineWidth',1.5);
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             ylabel('$E_K - \bar{E}_K$','fontsize',16, 'Interpreter', 'latex'  );
             
     end
 
    
-    if exist('t')&&exist('hv')
-        subplot(3,2,5)
-            plot(t,hv,'color',color{j},'LineWidth',1.5);
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            title('$\textit{Helicity } \langle \vec{u}\cdot \vec{\omega} \rangle$','fontsize',16, 'Interpreter', 'latex');
-    end
-
-    if exist('t')&&exist('w2')
-        subplot(3,2,6)
-            plot(t,w2,'color',color{j},'LineWidth',1.5); 
-            hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
-            title('$\textit{Vorticity } \int |\vec{\omega}|^2 dV$','fontsize',16, 'Interpreter', 'latex');
-            
-    end
+%     if exist('t')&&exist('hv')
+%         subplot(3,2,5)
+%             plot(t,hv,'color',color{j},'LineWidth',1.5);
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             title('$\textit{Helicity } \langle \vec{u}\cdot \vec{\omega} \rangle$','fontsize',16, 'Interpreter', 'latex');
+%     end
+% 
+%     if exist('t')&&exist('w2')
+%         subplot(3,2,6)
+%             plot(t,w2,'color',color{j},'LineWidth',1.5); 
+%             hold on;
+%             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+%             title('$\textit{Vorticity } \int |\vec{\omega}|^2 dV$','fontsize',16, 'Interpreter', 'latex');           
+%    end
 end 
+if (1==2)
 for j=1:size(files3,2)
     full_file=importdata(files3{1,j});
     timevar=transpose(full_file.data);
@@ -185,16 +187,17 @@ for j=1:size(files3,2)
     figure(3)
     if exist('t')&&exist('ev')
         subplot(3,2,1:2)
+        t(gca, 'FontSize', 12)
             plot(t,ev,'color',color{j},'LineWidth',1.5);
             hold on;
-            title('$\textit{Hydrodynamics of the ABC flow in a box } [1,1,1]$','fontsize',16, 'Interpreter', 'latex');
+            title('Hydrodynamics of the ABC flow in a box $[1,1,1]$','fontsize',16, 'Interpreter', 'latex');
             xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
             ylabel('$E_K$','fontsize',16, 'Interpreter', 'latex');
             legend(legendInfo3,'Location','northeast')
         subplot(3,2,3:4)
             plot(t,ev-mean(ev),'color',color{j},'LineWidth',1.5);
             hold on;
-            xlabel('$T$','fontsize',16, 'Interpreter', 'latex');
+            xlabel('$T [T_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
             ylabel('$E_K - \bar{E}_K$','fontsize',16, 'Interpreter', 'latex'  );
             
     end
@@ -404,3 +407,5 @@ for j=1:size(files6,2)
         legend(legendInfo6,'Location','northeast')
     end
 end 
+
+end

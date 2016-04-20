@@ -29,10 +29,8 @@ legendInfo2 = [     %{'Box=[1,1,1]'}...
                     {'Box=[32,2,1]'}...
                     {'Box=[80,2,1]'}...
                     {'Box=[128,2,1]'} ];            
-files3=[{'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_20/result_summary'}... 
-        {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_abc/results/box_20/result_summary'}];
-legendInfo3 = [ {'$\vec{u}_{abc}$'}...
-                {'$\vec{u}_{iii}$'}];
+                
+
             
 full_file=importdata(files1{1,1});
 timevar=full_file.data;
@@ -204,8 +202,10 @@ tblC = cell(100,size(timevar,2));
  
  for jj=1:5
      clearvars -except jj files1 files2 legendInfo3 legendInfo2
-     files3{1,1} = files1{1,jj};
-     files3{1,2} = files2{1,jj};
+     files3{1,1} = files1{1,jj};    % abc
+     files3{1,2} = files2{1,jj};    % iii
+     legendInfo3 = [    {'$\vec{u}_{abc}$'}...
+                        {'$\vec{u}_{iii}$'}];
      color{1} = [1,0,0];
      color{2} = [0,0,0];
      for j=1:size(files3,2)
@@ -261,7 +261,7 @@ tblC = cell(100,size(timevar,2));
        figure(4)
         subplot(2,5,jj)
                 if (mod(j,2)==0)
-                    plot(Rm.*sqrt(0.5 + (1./Lx).^2/3),Gr,'o',...
+                    plot(Rm.*(1.5+1./Lx.^2)/sqrt(1.5*(1+2*1./Lx.^4+9*1./Lx.^2)),Gr,'o',...
                         'LineStyle', ':',...
                         'color',color{j},...
                         'LineWidth',1.5,...
@@ -284,10 +284,11 @@ tblC = cell(100,size(timevar,2));
                 title(legendInfo2{1,jj},'fontsize',16, 'Interpreter', 'latex');
                 xlabel('$R_m$','fontsize',16, 'Interpreter', 'latex');
                 ylabel('$\sigma$ $[T^{-1}_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
+                ylim([0 0.25]);  
                 legend(legendInfo3,'Location','southeast','fontsize',16, 'Interpreter', 'latex')
        subplot(2,5,jj+5)
                 if (mod(j,2)==0)
-                    plot(Rm.*sqrt(0.5 + (1./Lx).^2/3),lBy./(2*pi),'o',...
+                    plot(Rm.*(1.5+1./Lx.^2)/sqrt(1.5*(1+2*1./Lx.^4+9*1./Lx.^2)),max(lBz,lBy)./(2*pi),'o',...
                         'LineStyle', ':',...
                         'color',color{j},...
                         'LineWidth',1.5,...
@@ -339,6 +340,7 @@ tblC = cell(100,size(timevar,2));
                 ylabel('$\sigma$ $[T^{-1}_{turnover}]$','fontsize',16, 'Interpreter', 'latex');
                 legend(legendInfo3,'Location','southeast','fontsize',16, 'Interpreter', 'latex');
                 xlim([0 2]);
+                ylim([-0.1 0.15]);  
        subplot(2,5,jj+5)
                 if (mod(j,2)==0)
                     plot(Rm.*sqrt(0.5 + (1./Lx).^2/3),lBy./(2*pi),'o',...
@@ -361,7 +363,7 @@ tblC = cell(100,size(timevar,2));
                 %title({'Length scale of the mean-field'},'fontsize',16, 'Interpreter', 'latex');
                 %plot(Rm,lBz./(2*pi),'LineStyle', '-','color',color{j},'LineWidth',1.5);
                 xlabel('$R_m$','fontsize',16, 'Interpreter', 'latex');
-                ylabel('$l(B_y)/2\pi$ $[L]$','fontsize',16, 'Interpreter', 'latex'  );
+                ylabel('$l(B)/2\pi$ $[L]$','fontsize',16, 'Interpreter', 'latex'  );
                 legend(legendInfo3,'Location','northeast','fontsize',16, 'Interpreter', 'latex')
                 ylim([0 32]);   
                 xlim([0 2]);
