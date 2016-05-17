@@ -15,16 +15,21 @@ clear all;
 zi = sqrt(-1);
 D_const=1;
 ku=1;  
+%arr_uii=[128 80 32 20 16 10 8];  
+%rmc_uii=[1.530000e-01 2.350000e-01 0.3247 0.39 0.4647 0.5317 0.6225];
+arr_uii=[8 10 16 20 32]; 
+rmc_uii=[0.627 0.54 0.4647 0.35 0.27];
+
 files2=[{'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_8/result_summary'}... 
         {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_10/result_summary'}...
         {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_16/result_summary'}...
         {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_20/result_summary'}...
         {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_32/result_summary'}];
-legendInfo2 = [     {'Approx [8,2,1]'}...
-                    {'Approx [10,2,1]'}...
-                    {'Approx [16,2,1]'}...
-                    {'Approx [20,2,1]'}...
-                    {'Approx [32,2,1]'} ];      
+legendInfo2 = [     {'Box=[8,2,1]'}...
+                    {'Box=[10,2,1]'}...
+                    {'Box=[16,2,1]'}...
+                    {'Box=[20,2,1]'}...
+                    {'Box=[32,2,1]'} ];      
 % matrix dimensions @n = [-@n_max, @n_max]
 % @n is either positive or negative and so is n_max 
     % For boxes 32,20,16, rates dont change between 170~324
@@ -32,11 +37,17 @@ legendInfo2 = [     {'Approx [8,2,1]'}...
 
 nn=[11 16];
 % box sizes to consider
-ar = [8 10 16 20 32];    
-color{1} = [0.83,0,0.17]; color{2} = [1,0.67,0.33]; color{3} = [0.33,0.33,1.0];   
-color{4} = [0,0.5,0]; color{5} = [0.5,0,0.5]; 
-%for co=1:2 
-    co=1
+ar = [8 10 16 20 32];
+for ind=1:5
+    color{ind}=[0,0,0];
+end
+% color{1} = [0.83,0,0.17]; 
+% color{2} = [1,0.67,0.33]; 
+% color{3} = [0.33,0.33,1.0];   
+% color{4} = [0,0.5,0]; 
+% color{5} = [0.5,0,0.5]; 
+for co=1:2 
+ 
     n_max=nn(co);
     for box = 1:size(ar,2) 
         % color{box}=rand(1,3); 
@@ -127,60 +138,8 @@ color{4} = [0,0.5,0]; color{5} = [0.5,0,0.5];
             count = count + 1;
         end
    
-        legendInfo{box} = ['[' num2str(ar(box)) ',2,1]'];
-    
-    if (Ig > size(n,2)/2-1)
-        for ind=1:size(n,2)/2
-            V(ind,Ig) = V(size(n,2)-(ind-1),Ig);
-        end
-    end
-    if (Ig < size(n,2)/2)
-        for ind=1:size(n,2)/2
-            V(size(n,2)-(ind-1),Ig)= V(ind,Ig);
-        end
-    end
-    
-    bbar = ifft(V(:,Ig));
-    b_back = real(fft(bbar));
-    
-    for ind=1:size(n,2)
-       dbdxft(ind)=zi*n(ind)*m*V(ind,Ig);
-       x(ind) = ar(box)/size(n,2)*(ind-1);
-    end
-    
-    dbdxbar=ifft(dbdxft);
-    
-    %x(size(n,2)+1) = ar(box);
-    %bbar(size(n,2)+1) = bbar(1);
-    %dbdxbar(size(n,2)+1) = dbdxbar(1);
-    
-    bbarint=trapz(x,bbar);
-    dbxbarint=trapz(x,real(dbdxbar))
-    lb = 1/sqrt(dbxbarint/bbarint)
-   
-    
-    figure(2)
-    subplot(5,4,4*box-3)         
-            plot(x,real(bbar));
-            title(num2str(ar(box)));
-            hold on;
-            plot([0 x(end)],[bbarint bbarint],'k:');
-           
-            plot(x,max(bbar)*cos(2*pi*kkk(box)*m*x))
-    subplot(5,4,4*box-2)
-            plot(n*m,V(:,Ig), 'o', 'Markersize',4.0)
-            hold on;
-            plot(n*m,b_back,'ro');
-    subplot(5,4,4*box-1)        
-            plot(x,dbdxbar);
-            hold on;
-            plot([0 x(end)],[dbxbarint dbxbarint],'k:');
-    subplot(5,4,4*box)
-            plot(n*m,abs(dbdxft),'b+');
-    
-    
-    
-if (1==2)        
+       
+      
     figure(1)
         if (mod(co,2)~=0)
             subplot(2,size(ar,2) ,box)
@@ -190,11 +149,14 @@ if (1==2)
                         'LineWidth',1.5,...
                         'MarkerEdgeColor', color{box} , ...
                         'MarkerFaceColor', color{box}, ...
-                        'MarkerSize',1.5);
+                        'MarkerSize',2.5);
                 hold on;
-                title(legendInfo{box});
+                
+                title(legendInfo2{box},'fontsize',16, 'Interpreter', 'latex');
                 xlabel('R_m');
-                ylabel('L_{B(x,t)}/2\pi [L]');
+                if (box==1)
+                    ylabel('L_{mean-field}/2\pi [L]');
+                end
                  set(gca, 'FontSize', 14)     
            
             subplot(2,size(ar,2),box+size(ar,2))
@@ -204,10 +166,12 @@ if (1==2)
                         'LineWidth',1.5,...
                         'MarkerEdgeColor', color{box} , ...
                         'MarkerFaceColor', color{box}, ...
-                        'MarkerSize',1.5);
+                        'MarkerSize',2.5);
                 hold on;
-                xlabel('R_m');
-                ylabel('\sigma [T^{-1}_{turnover}]');
+                  xlabel('R_m');
+                  if (box==1)
+                    ylabel('\sigma [T^{-1}_{turnover}]');
+                end
                 set(gca, 'FontSize', 14)     
                 
             end
@@ -220,11 +184,13 @@ if (1==2)
                         'LineWidth',1.5,...
                         'MarkerEdgeColor', color{box} , ...
                         'MarkerFaceColor', color{box}, ...
-                        'MarkerSize',1.0);
+                        'MarkerSize',2.0);
                 hold on;
-                title(legendInfo{box});
+                %title(legendInfo{box});
                 xlabel('R_m');
-                ylabel('L_{B(x,t)}/2\pi [L]');
+                if (box==1)
+                    ylabel('L_{mean field}/2\pi [L]');
+                end
                  set(gca, 'FontSize', 14)
                
             subplot(2,size(ar,2),box+size(ar,2))
@@ -234,15 +200,16 @@ if (1==2)
                         'LineWidth',1.5,...
                         'MarkerEdgeColor', color{box} , ...
                         'MarkerFaceColor', color{box}, ...
-                        'MarkerSize',1.0);
-                hold on;
+                        'MarkerSize',2.0);
+                hold on;  
                 xlabel('R_m');
-                ylabel('\sigma [T^{-1}_{turnover}]');
+                if (box==1)
+                    ylabel('\sigma [T^{-1}_{turnover}]');
+                end
                 set(gca, 'FontSize', 14)     
             end
         end
     %legend(legendInfo,'Orientation','horizontal','Location','northoutside','fontsize',16, 'Interpreter', 'latex', 'Box', 'off');
-  if (1==2) 
     for j=1:size(files2,2)
         full_file=importdata(files2{1,j});
         timevar=full_file.data;
@@ -266,30 +233,30 @@ if (1==2)
         
        figure(1)
         subplot(2,size(files2,2) ,j)
-            plot(Rm(Gr > 0),max(lBy(Gr > 0),lBz(Gr > 0))./(2*pi),'d',...
+            plot(Rm(Gr > -0.01),max(lBy(Gr > -0.01),lBz(Gr > -0.01))./(2*pi),'+',...
                     'LineStyle', 'none',...
-                    'color','k',...
+                    'color','r',...
                     'LineWidth',1.5,...
-                    'MarkerEdgeColor', 'k' , ...
-                    'MarkerFaceColor','k', ...
-                    'MarkerSize',2.0);
-       xlim([0 rmm(end)]);
-       ylim([0 max(ar)]);
-        if (j==1)
-            legend('Odd mode approx','SNOOPY','Even mode approx');
-        end
-       subplot(2,size(files2,2) ,j+size(files2,2))
-            plot(Rm(Gr > 0),Gr(Gr > 0),'d',...
-                    'LineStyle', 'none',...
-                    'color','k',...
-                    'LineWidth',1.5,...
-                    'MarkerEdgeColor', 'k' , ...
-                    'MarkerFaceColor', 'k', ...
-                    'MarkerSize',2.0);
+                    'MarkerEdgeColor', 'r' , ...
+                    'MarkerFaceColor','r', ...
+                    'MarkerSize',5.0);
             hold on;
-        xlim([0 rmm(end)]);
-        ylim([0 max(grr)]);
+            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))],[-0.01 max(ar)],'k:');
+           xlim([0 rmm(end)]);
+           ylim([-0.01 max(ar)]);
+            
+        
+       subplot(2,size(files2,2) ,j+size(files2,2))
+            plot(Rm(Gr > -0.01),Gr(Gr > -0.01),'+',...
+                    'LineStyle', 'none',...
+                    'color','r',...
+                    'LineWidth',1.5,...
+                    'MarkerEdgeColor', 'r' , ...
+                    'MarkerFaceColor', 'r', ...
+                    'MarkerSize',5.0);
+            hold on;
+            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))],[-0.01 max(grr)],'k:');
+            xlim([0 rmm(end)]);
+            ylim([-0.01 max(grr)]);
     end
-    end 
-    end 
-%end
+end
