@@ -1,20 +1,22 @@
+close all;
+clear all;
 
 rep1='/store/ASTRO/vs391/kinematic_dynamo/u_iii';
 rep2='/store/ASTRO/vs391/kinematic_dynamo/u_abc';
 
-files1=[%{[rep1,'/box_8_modes']}... 
+files1=[{[rep1,'/box_8_modes']}... 
         {[rep1,'/box_10_modes']}...
         {[rep1,'/box_16_modes']}...  
         {[rep1,'/box_20_modes']}... 
         {[rep1,'/box_32_modes']}];
         
-files2=[%{[rep2,'/box_8_modes']}... 
+files2=[{[rep2,'/box_8_modes']}... 
         {[rep2,'/box_10_modes']}...
         {[rep2,'/box_16_modes']}...  
         {[rep2,'/box_20_modes']}... 
         {[rep2,'/box_32_modes']}];
     
-legendInfo1 = [     %{'Box=[8,2,1]'}...
+legendInfo1 = [     {'Box=[8,2,1]'}...
                     {'Box=[10,2,1]'}...
                     {'Box=[16,2,1]'}...
                     {'Box=[20,2,1]'}...
@@ -38,14 +40,14 @@ end
     full_file=importdata(files1{1,j});
     timevar=full_file;%.data;
     nvar=size(timevar,2);
-    ndat=size(timevar,1)
+    ndat=size(timevar,1);
     % Create a table with all variables
     %tblA = table(Lx,Rm,Gr,lBx,lBy,lBz);
     tblA = table(timevar(:,1),timevar(:,2),timevar(:,3),timevar(:,4),timevar(:,5),timevar(:,6));
     % Sort the rows of the table based on Rm
     tblB = sortrows(tblA,2);
     Lx = tblB{:,1};
-    Rm = tblB{:,2}.*(1.5+1./Lx(1).^2)/sqrt(1.5*(1+2*1./Lx(1).^4+9*1./Lx(1).^2));
+    Rm = tblB{:,2}.*(1.5+1./Lx(1).^2)/sqrt(1.5*(3+2*1./Lx(1).^4+9*1./Lx(1).^2));
     Gr = tblB{:,3};
     kx= tblB{:,4};
     ky= tblB{:,5};
@@ -75,25 +77,27 @@ end
          box_rmc(j) = Lx(1);
     end
        
-    figure(3)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    hFig1 = figure(3);
+    set(hFig1, 'Position', [100, 50, 1200, 300]); 
+    set(gca, 'FontSize', 14)
     subplot(1,size(files1,2),j)
-    set(gca, 'FontSize', 18)    
-            plot(Rm(Gr>0),1./kx(Gr>0),'o',...
-                'LineStyle', 'none',...
-                'color','k',...
-                'LineWidth',1.5,...
-                'MarkerEdgeColor', 'k', ...
-                'MarkerFaceColor', 'k', ...
-                'MarkerSize',6.5);
-            hold on;
-            title(legendInfo1{j},'fontsize',16, 'Interpreter', 'latex');
-            xlabel('$R_m$','fontsize',16, 'Interpreter', 'latex');
-            if (j==1)
-                ylabel('$1/k_x [L^{-1}]$','fontsize',16, 'Interpreter', 'latex');
-            end
-            xlim([0 40]);
-            ylim([0 32]);  
-    
+        loglog(Rm(Gr>0),1./kx(Gr>0),'o',...
+        'LineStyle', 'none',...
+        'color','k',...
+        'LineWidth',1.5,...
+        'MarkerEdgeColor', 'k', ...
+        'MarkerFaceColor', 'k', ...
+        'MarkerSize',4.5);
+        hold on;
+        title(legendInfo1{j}, 'Interpreter', 'latex');
+        xlabel('$R_m$', 'Interpreter', 'latex');
+        if (j==1)
+            ylabel('Dominant $k_x^{-1}$', 'Interpreter', 'latex');
+        end
+        xlim([0.1 100]);
+        ylim([1 35]);  
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     figure(1)
         subplot(2,size(files1,2),j)
             plot(Rm(ky==0 & Gr>0),1./kx(ky==0 & Gr>0),'o',...
@@ -179,7 +183,7 @@ for co=1:2
         % magnetic diffusivity & magnetic Reynolds number
         for rm=0.001:0.001:3.0
         %for rm=10:1.0:500  
-            eta = (1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))/rm;
+            eta = (1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2))/rm;
             %eta = (D_const*sqrt(m^2/3.+0.5))/rm;
 
             % @a0 = @D^2@ku/@eta
@@ -338,19 +342,27 @@ end
          rmc(j)= Rm_pos(1);
          box_rmc(j) = Lx(1);
     end
-    figure(3)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    hFig1 = figure(3);
+    set(hFig1, 'Position', [100, 50, 1100, 300]); 
+    set(gca, 'FontSize', 14)
+    
         subplot(1,size(files2,2),j)
-            plot(Rm(Gr>0),1./kx(Gr>0),'o',...
+            plot([0.1 50],[2 2],'k:')
+            hold on;
+            plot([0.1 50],[1./(0.5+1/Lx(1)) 1./(0.5+1/Lx(1))],'k:')
+            plot([0.1 50],[1./(0.5-1/Lx(1)) 1./(0.5-1/Lx(1))],'k:')
+            
+            loglog(Rm(Gr>0),1./kx(Gr>0),'o',...
                 'LineStyle', 'none',...
                 'color','r',...
                 'LineWidth',1.5,...
                 'MarkerEdgeColor', 'r', ...
                 'MarkerFaceColor', 'r', ...
-                'MarkerSize',6.5);
-            hold on;
-            plot([0 40],[2 2],'k:')
-            plot([0 40],[1./(0.5+1/Lx(1)) 1./(0.5+1/Lx(1))],'k:')
-            plot([0 40],[1./(0.5-1/Lx(1)) 1./(0.5-1/Lx(1))],'k:')
+                'MarkerSize',4.5);
+            
+            
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
     figure(2)
     set(gca, 'FontSize', 20)
         subplot(2,size(files2,2),j)

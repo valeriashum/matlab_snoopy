@@ -8,7 +8,7 @@
 
 
 
-
+close all;
 clear all;
 % Provide values for constants involved:
 % velocity profile: 
@@ -20,11 +20,15 @@ ku=1;
 arr_uii=[8 10 16 20 32]; 
 rmc_uii=[0.627 0.54 0.4647 0.35 0.27];
 
-files2=[{'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_8/result_summary'}... 
-        {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_10/result_summary'}...
-        {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_16/result_summary'}...
-        {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_20/result_summary'}...
-        {'/data/novadisk/vs391/snoopy_kinematic_dynamo/u_iii/results/box_32/result_summary'}];
+rep1='/store/ASTRO/vs391/kinematic_dynamo/u_iii/results/box_';
+rep2='/store/ASTRO/vs391/kinematic_dynamo/u_abc';
+
+files2=[{[rep1,'8/result_summary']}... 
+        {[rep1,'10/result_summary']}...
+        {[rep1,'16/result_summary']}...
+        {[rep1,'20/result_summary']}...
+        {[rep1,'32/result_summary']}];
+    
 legendInfo2 = [     {'Box=[8,2,1]'}...
                     {'Box=[10,2,1]'}...
                     {'Box=[16,2,1]'}...
@@ -58,7 +62,7 @@ for co=1:2
         % magnetic diffusivity & magnetic Reynolds number
         for rm=0.001:0.001:1.0
         %for rm=10:1.0:500  
-            eta = (1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))/rm;
+            eta = (1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2))/rm;
             %eta = (D_const*sqrt(m^2/3.+0.5))/rm;
 
             % @a0 = @D^2@ku/@eta
@@ -229,7 +233,7 @@ for co=1:2
         lBz= tblB{:,6};
         
         m = 1./Lx(1); 
-        Rm = (1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))*etainv;
+        Rm = (1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2))*etainv;
         
        figure(1)
         subplot(2,size(files2,2) ,j)
@@ -241,7 +245,7 @@ for co=1:2
                     'MarkerFaceColor','r', ...
                     'MarkerSize',5.0);
             hold on;
-            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))],[-0.01 max(ar)],'k:');
+            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2))],[-0.01 max(ar)],'k:');
            xlim([0 rmm(end)]);
            ylim([-0.01 max(ar)]);
             
@@ -255,7 +259,7 @@ for co=1:2
                     'MarkerFaceColor', 'r', ...
                     'MarkerSize',5.0);
             hold on;
-            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(1+2*m^4+9*m^2))],[-0.01 max(grr)],'k:');
+            plot([rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2)) rmc_uii(j)*(1.5+m^2)/sqrt(1.5*(3+2*m^4+9*m^2))],[-0.01 max(grr)],'k:');
             xlim([0 rmm(end)]);
             ylim([-0.01 max(grr)]);
     end

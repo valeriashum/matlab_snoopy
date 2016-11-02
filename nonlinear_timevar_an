@@ -1,0 +1,31 @@
+close all;
+clear all;
+
+box=[10 32];
+
+for j=1:size(box)
+    rep=['/store/ASTRO/vs391/nonlinear_dynamo/u_iii/box_', num2str(box(j))];
+    file_info=[rep, 'info'];
+    full_file=importdata(infofile);
+    info=full_file;
+    tblA = table(info(:,1),info(:,2), info(:,3));
+    % Sort the rows of the table based on Re, then Rm
+    tblB = sortrows(tblA,[4,3]); 
+    run = tblB{1:end,1}; 
+    cas = tblB{1:end,2}; 
+    Rm  = tblB{1:end,3}; 
+    Re  = tblB{1:end,4}; 
+    
+    
+    file_time=[rep,'/run_', num2str(run(j)), '/previous_run_', num2str(cas(j)), '/timevar'];
+    full_file=importdata(file_time);
+    timevar=transpose(full_file.data);
+    nvar=size(timevar,1);
+    var_name=strread(full_file.textdata{1},'%s',nvar);
+
+    % ASSIGN VARIABLE WITH HEADINGS 
+    for ii=1:nvar
+        assignin('base',var_name{ii},timevar(ii,:)); 
+    end
+
+end
